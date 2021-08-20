@@ -1,16 +1,9 @@
-'''
-TODOS
-1. resizing image
-2. bgr-> hsv
-3. color filers (B, G, R)
-4. find contours
-'''
 import cv2
 import numpy as np
 import imutils
 from numpy.lib.shape_base import column_stack
 
-img = cv2.imread('alin.png')
+img = cv2.imread('images/test3.jpg')
 # cv2.imshow("test", img)
 hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
@@ -39,35 +32,40 @@ green_contours = imutils.grab_contours(green_contours)
 red_contours = cv2.findContours(mask_red, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 red_contours = imutils.grab_contours(red_contours)
 
+# empty arrays
+divs = []
+paragraphs = []
+images = []
+
 for cb in blue_contours:
-    # area = cv2.contourArea(cb)
-    # if area > 500: 
-    #    cv2.drawContours(img, [cb], -1, (0,0,0), 3)
-    # divs = np.array()
     x,y,w,h = cv2.boundingRect(cb)
-    divs = np.array([x, y, w, h])
+    div = [x, y, w, h]
+    divs.append(div)
     cv2.rectangle(img, (x, y), (x+w, y+h), (225, 255, 0), 2)
-    print('divs: ', divs)
+    print('div: ', div)
 
 for cg in green_contours:
-    # area = cv2.contourArea(cb)
-    # if area > 500: 
-    #    cv2.drawContours(img, [cb], -1, (0,0,0), 3)
-    # divs = np.array()
     x,y,w,h = cv2.boundingRect(cg)
-    paragraphs = np.array([x, y, w, h])
+    paragraph = [x, y, w, h]
+    paragraphs.append(paragraph)
     cv2.rectangle(img, (x, y), (x+w, y+h), (225, 225, 0), 2)
-    print('paragraphs: ', paragraphs)
+    print('paragraph: ', paragraph)
 
 for cr in red_contours:
-    # area = cv2.contourArea(cb)
-    # if area > 500: 
-    #    cv2.drawContours(img, [cb], -1, (0,0,0), 3)
-    # divs = np.array()
     x,y,w,h = cv2.boundingRect(cr)
-    images = np.array([x, y, w, h])
+    image = [x, y, w, h]
+    images.append(image)
     cv2.rectangle(img, (x, y), (x+w, y+h), (225, 225, 0), 2)
-    print('images: ',images)
+    print('image: ',image)
+
+
+#convert arrays into np.arrays
+divs = np.array(divs)
+paragraphs = np.array(paragraphs)
+images = np.array(images)
+
+for item in divs:
+    print(item)
 
 cv2.imshow("test", img)
 cv2.waitKey(0)
